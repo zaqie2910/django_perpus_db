@@ -1,16 +1,13 @@
-"""
-WSGI config for webperpus project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.0/howto/deployment/wsgi/
-"""
-
 import os
+import sys
+
+# Jalur ke folder project kamu (sesuai nama dari GitHub)
+path = '/home/zaqie/django_perpus_db'
+if path not in sys.path:
+    sys.path.append(path)
+
+# Mengarahkan ke settings.py di dalam folder webperpus
+os.environ['DJANGO_SETTINGS_MODULE'] = 'webperpus.settings'
 
 from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'webperpus.settings')
-
 application = get_wsgi_application()
