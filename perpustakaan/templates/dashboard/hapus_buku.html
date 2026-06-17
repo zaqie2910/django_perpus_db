@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Hapus Buku - SIPUSTAKA{% endblock %}
+
+{% block content %}
+<div class="space-y-4">
+    <div class="flex items-center gap-2 text-sm text-slate-500">
+        <a href="{% url 'buku' %}" class="hover:text-slate-800 transition">Kelola Buku</a>
+        <span class="material-icons-outlined text-xs">chevron_right</span>
+        <span class="text-slate-800 font-medium">Hapus Buku</span>
+    </div>
+
+    <div class="max-w-2xl bg-white p-8 rounded-3xl border border-slate-200 shadow-lg shadow-slate-200/60 space-y-6">
+
+        {% if buku %}
+        <div class="space-y-2">
+            <p class="text-sm font-medium text-slate-500">Anda akan menghapus:</p>
+            <h3 class="text-xl font-bold text-slate-900">{{ buku.judul }}</h3>
+            <p class="text-sm text-slate-400 mt-1">Data peminjaman yang menggunakan buku ini tidak akan otomatis
+                dihapus.</p>
+        </div>
+
+        <form action="{% url 'buku_eksekusi_hapus' buku.id %}" method="POST"
+            class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+            {% csrf_token %}
+            <a href="{% url 'buku' %}"
+                class="px-6 py-2.5 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition">
+                Batal
+            </a>
+            <button type="submit"
+                class="px-6 py-2.5 bg-rose-600 text-white font-medium rounded-xl hover:bg-rose-700 shadow-md shadow-rose-600/20 transition">
+                Hapus
+            </button>
+        </form>
+        {% else %}
+        <p class="text-slate-600">Data buku tidak ditemukan atau sudah dihapus.</p>
+        <a href="{% url 'buku' %}" class="inline-block px-4 py-2 bg-slate-900 text-white rounded-xl">Kembali</a>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

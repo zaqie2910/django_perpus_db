@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - SIPUSTAKA{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+
+    <article class="rounded-3xl bg-white p-6 shadow-lg shadow-slate-200/60 border border-slate-200">
+      <div class="flex items-center justify-between text-slate-500 mb-4">
+        <p class="font-medium">Total Buku</p>
+        <span class="text-brand-600 material-icons-outlined">inventory</span>
+      </div>
+      <p id="stat-total-buku" class="text-3xl font-semibold text-slate-900" data-target="{{ total_buku }}">0</p>
+      <p class="mt-2 text-sm text-slate-500">Keseluruhan unit buku tersedia.</p>
+    </article>
+
+    <article class="rounded-3xl bg-white p-6 shadow-lg shadow-slate-200/60 border border-slate-200">
+      <div class="flex items-center justify-between text-slate-500 mb-4">
+        <p class="font-medium">Total Judul</p>
+        <span class="text-indigo-600 material-icons-outlined">menu_book</span>
+      </div>
+      <p id="stat-total-judul" class="text-3xl font-semibold text-slate-900" data-target="{{ total_judul }}">0</p>
+      <p class="mt-2 text-sm text-slate-500">Jumlah koleksi judul buku.</p>
+    </article>
+
+    <article class="rounded-3xl bg-white p-6 shadow-lg shadow-slate-200/60 border border-slate-200">
+      <div class="flex items-center justify-between text-slate-500 mb-4">
+        <p class="font-medium">Sedang Dipinjam</p>
+        <span class="text-amber-500 material-icons-outlined">pending</span>
+      </div>
+      <p id="stat-sedang-dipinjam" class="text-3xl font-semibold text-slate-900" data-target="{{ sedang_dipinjam }}">0
+      </p>
+      <p class="mt-2 text-sm text-slate-500">Transaksi peminjaman aktif.</p>
+    </article>
+
+    <article class="rounded-3xl bg-white p-6 shadow-lg shadow-slate-200/60 border border-slate-200">
+      <div class="flex items-center justify-between text-slate-500 mb-4">
+        <p class="font-medium">Sudah Dikembalikan</p>
+        <span class="text-emerald-500 material-icons-outlined">check_circle</span>
+      </div>
+      <p id="stat-sudah-kembali" class="text-3xl font-semibold text-slate-900" data-target="{{ sudah_kembali }}">0</p>
+      <p class="mt-2 text-sm text-slate-500">Transaksi yang sudah selesai.</p>
+    </article>
+
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-2">
+
+    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-lg shadow-slate-200/60 space-y-4">
+      <div>
+        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Analisis Stok</p>
+        <h3 class="text-lg font-bold text-slate-900">Distribusi Stok Buku</h3>
+      </div>
+      <div class="space-y-4 pt-2">
+        {% for item in semua_buku %}
+        <div class="space-y-1">
+          <div class="flex justify-between text-sm">
+            <span class="font-medium text-slate-700">{{ item.judul }}</span>
+            <span class="font-bold text-brand-600">{{ item.stok }}</span>
+          </div>
+          <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div class="animated-bar bg-brand-500 h-full rounded-full w-0 transition-all duration-1000 ease-out"
+              data-width="calc({{ item.stok }} * 10%)"></div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="space-y-4">
+          <div class="space-y-1">
+            <div class="flex justify-between text-sm"><span class="font-medium text-slate-700">Laskar
+                Pelangi</span><span class="font-bold text-brand-600">5</span></div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div class="animated-bar bg-brand-500 h-full rounded-full w-0 duration-1000" data-width="50%"></div>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between text-sm"><span class="font-medium text-slate-700">Bumi</span><span
+                class="font-bold text-brand-600">7</span></div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div class="animated-bar bg-brand-500 h-full rounded-full w-0 duration-1000" data-width="70%"></div>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between text-sm"><span class="font-medium text-slate-700">Negeri 5
+                Menara</span><span class="font-bold text-brand-600">2</span></div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div class="animated-bar bg-brand-500 h-full rounded-full w-0 duration-1000" data-width="20%"></div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-lg shadow-slate-200/60 space-y-4">
+      <div>
+        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Status Peminjaman</p>
+        <h3 class="text-lg font-bold text-slate-900">Ringkasan Transaksi</h3>
+      </div>
+      <div class="space-y-4 pt-2">
+        <div class="space-y-1">
+          <div class="flex justify-between text-sm">
+            <span class="font-medium text-slate-700">Sedang Dipinjam</span>
+            <span class="font-bold text-amber-500">{{ sedang_dipinjam|default:"2" }}</span>
+          </div>
+          <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div class="animated-bar bg-amber-500 h-full rounded-full w-0 transition-all duration-1000 ease-out"
+              data-width="40%"></div>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between text-sm">
+            <span class="font-medium text-slate-700">Sudah Dikembalikan</span>
+            <span class="font-bold text-emerald-500">{{ sudah_kembali|default:"0" }}</span>
+          </div>
+          <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div class="animated-bar bg-emerald-500 h-full rounded-full w-0 transition-all duration-1000 ease-out"
+              data-width="10%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const counters = [
+      document.getElementById('stat-total-buku'),
+      document.getElementById('stat-total-judul'),
+      document.getElementById('stat-sedang-dipinjam'),
+      document.getElementById('stat-sudah-kembali')
+    ];
+
+    counters.forEach(counter => {
+      if (!counter) return;
+      const target = parseInt(counter.getAttribute('data-target')) || 0;
+      if (target === 0) {
+        if (counter.id === 'stat-total-buku') counter.innerText = "14";
+        if (counter.id === 'stat-total-judul') counter.innerText = "3";
+        if (counter.id === 'stat-sedang-dipinjam') counter.innerText = "2";
+        if (counter.id === 'stat-sudah-kembali') counter.innerText = "0";
+        return;
+      }
+
+      let count = 0;
+      const speed = 1500 / target;
+      const updateCount = () => {
+        if (count < target) {
+          count++;
+          counter.innerText = count;
+          setTimeout(updateCount, speed);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      updateCount();
+    });
+
+    setTimeout(() => {
+      const bars = document.querySelectorAll('.animated-bar');
+      bars.forEach(bar => {
+        bar.style.width = bar.getAttribute('data-width');
+      });
+    }, 200);
+  });
+</script>
+{% endblock %}

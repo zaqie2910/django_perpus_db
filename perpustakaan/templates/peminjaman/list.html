@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Log Peminjaman - SIPUSTAKA{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div>
+      <p class="text-slate-500 text-sm">Catatan sirkulasi peminjaman buku.</p>
+      <h3 class="text-3xl font-bold text-slate-900">Data Peminjaman</h3>
+    </div>
+    <a href="{% url 'peminjaman_tambah' %}"
+      class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 text-white px-5 py-3 font-medium hover:bg-blue-700 transition shadow-sm">
+      <span class="material-icons-outlined text-sm">add_task</span> Pinjam Buku
+    </a>
+  </div>
+
+  <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200 overflow-x-auto">
+    <table class="min-w-full text-left text-sm">
+      <thead class="text-slate-400 font-medium border-b border-slate-100">
+        <tr>
+          <th class="py-3 px-4">Nama Peminjam</th>
+          <th class="py-3 px-4">Buku</th>
+          <th class="py-3 px-4">Tgl Pinjam</th>
+          <th class="py-3 px-4">Jatuh Tempo</th>
+          <th class="py-3 px-4">Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-50 text-slate-700">
+        {% for item in data_peminjaman %}
+        <tr class="hover:bg-slate-50/80 transition">
+          <td class="py-4 px-4 font-semibold text-slate-900">{{ item.siswa.nama }}</td>
+          <td class="py-4 px-4 text-slate-600">{{ item.buku.judul }}</td>
+          <td class="py-4 px-4 text-slate-500">{{ item.tanggal_pinjam }}</td>
+          <td class="py-4 px-4 text-slate-500">{{ item.jatuh_tempo }}</td>
+          <td class="py-4 px-4">
+            {% if item.sudah_kembali %}
+            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium">Dikembalikan</span>
+            {% else %}
+            <span
+              class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-medium border border-amber-100">Dipinjam</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="hover:bg-slate-50/80 transition">
+          <td class="py-4 px-4 font-semibold text-slate-900">Ahmad Fauzan (Sample)</td>
+          <td class="py-4 px-4 text-slate-600">Algoritma Pemrograman</td>
+          <td class="py-4 px-4 text-slate-500">12 Juni 2026</td>
+          <td class="py-4 px-4 text-slate-500">19 Juni 2026</td>
+          <td class="py-4 px-4"><span
+              class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-medium border border-amber-100">Dipinjam</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
